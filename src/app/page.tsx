@@ -11,7 +11,7 @@ export default function Home() {
           {posts.map((post) => (
             <Link
               key={post.slug}
-              href={`/blog/${post.slug}`}
+              href={`/posts/${post.slug}`}
               className='text-sm hover:underline'>
               {post.title}
             </Link>
@@ -26,7 +26,7 @@ export default function Home() {
               key={post.slug}
               className='group relative rounded-lg border p-6 hover:shadow'>
               <h2 className='text-2xl font-semibold mb-2'>
-                <Link href={`/blog/${post.slug}`} className='hover:underline'>
+                <Link href={`/posts/${post.slug}`} className='hover:underline'>
                   {post.title}
                 </Link>
               </h2>

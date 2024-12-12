@@ -41,7 +41,7 @@ export default function Post({ params }: { params: { slugs: string } }) {
           <ul className='space-y-1'>
             {posts.map((p) => (
               <li key={p.slug}>
-                <Link href={`/blog/${p.slug}`} className='text-sm hover:underline'>
+                <Link href={`/posts/${p.slug}`} className='text-sm hover:underline'>
                   {p.title}
                 </Link>
               </li>
