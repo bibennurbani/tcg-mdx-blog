@@ -6,221 +6,193 @@ draft: false
 summary: 'Markdown cheatsheet for all your blogging needs - headers, lists, images, tables and more! An illustrated guide based on GitHub Flavored Markdown.'
 ---
 
-# Markdown Guide
+# Introduction
 
-Welcome to the Markdown Guide! This post will help you understand the basics of Markdown syntax.
+Markdown and Mdx parsing is supported via `unified`, and other remark and rehype packages. `next-mdx-remote` allows us to parse `.mdx` and `.md` files in a more flexible manner without touching webpack.
+
+GitHub flavored markdown is used. `mdx-prism` provides syntax highlighting capabilities for code blocks. Here's a demo of how everything looks.
+
+The following markdown cheatsheet is adapted from: https://guides.github.com/features/mastering-markdown/
+
+# What is Markdown?
+
+Markdown is a way to style text on the web. You control the display of the document; formatting words as bold or italic, adding images, and creating lists are just a few of the things we can do with Markdown. Mostly, Markdown is just regular text with a few non-alphabetic characters thrown in, like `#` or `*`.
+
+# Syntax guide
+
+Here’s an overview of Markdown syntax that you can use anywhere on GitHub.com or in your own text files.
 
 ## Headers
 
-You can create headers using the `#` symbol:
+```
+# This is a h1 tag
 
-```markdown
-# H1
+## This is a h2 tag
 
-## H2
-
-### H3
-
-#### H4
-
-##### H5
-
-###### H6
+#### This is a h4 tag
 ```
 
----
+# This is a h1 tag
+
+## This is a h2 tag
+
+#### This is a h4 tag
+
+## Emphasis
+
+```
+_This text will be italic_
+
+**This text will be bold**
+
+_You **can** combine them_
+```
+
+_This text will be italic_
+
+**This text will be bold**
+
+_You **can** combine them_
 
 ## Lists
 
-### Unordered Lists
+### Unordered
 
-```markdown
+```
 - Item 1
 - Item 2
-  - Subitem 2.1
-  - Subitem 2.2
+  - Item 2a
+  - Item 2b
 ```
 
-### Ordered Lists
+- Item 1
+- Item 2
+  - Item 2a
+  - Item 2b
 
-```markdown
-1. First item
-2. Second item
-3. Third item
+### Ordered
+
+```
+1. Item 1
+1. Item 2
+1. Item 3
+   1. Item 3a
+   1. Item 3b
 ```
 
-### Mixed Lists
+1. Item 1
+1. Item 2
+1. Item 3
+   1. Item 3a
+   1. Item 3b
 
-```markdown
-1. Ordered item
-   - Unordered subitem 1
-   - Unordered subitem 2
-2. Another ordered item
+## Images
+
+```
+![GitHub Logo](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
+Format: ![Alt Text](url)
 ```
 
----
+![GitHub Logo](https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png)
 
-## Links and Images
+## Links
 
-### Basic Link
-
-```markdown
-[Visit OpenAI](https://www.openai.com)
+```
+http://github.com - automatic!
+[GitHub](http://github.com)
 ```
 
-### Basic Image
+http://github.com - automatic!
+[GitHub](http://github.com)
 
-```markdown
-![Alt text for the image](/placeholder.svg?height=200&width=300)
+## Blockquotes
+
+```
+As Kanye West said:
+
+> We're living the future so
+> the present is our past.
 ```
 
-### Link with Title
+As Kanye West said:
 
-```markdown
-[Visit OpenAI](https://www.openai.com "OpenAI's Homepage")
+> We're living the future so
+> the present is our past.
+
+## Inline code
+
+```
+I think you should use an
+`<addr>` element here instead.
 ```
 
-### Image with Title
+I think you should use an
+`<addr>` element here instead.
 
-```markdown
-![Alt text with title](/placeholder.svg 'Image Title')
-```
+## Syntax highlighting
 
----
+Here’s an example of how you can use syntax highlighting with [GitHub Flavored Markdown](https://help.github.com/articles/basic-writing-and-formatting-syntax/):
 
-## Code Blocks
-
-### Inline Code
-
-```markdown
-Inline code: `const greeting = "Hello, world!";`
-```
-
-### JavaScript Code Block
-
-````markdown
-```javascript
-function greet(name) {
-  console.log(`Hello, ${name}!`);
+````
+```js:fancyAlert.js
+function fancyAlert(arg) {
+  if (arg) {
+    $.facebox({ div: '#foo' })
+  }
 }
 ```
 ````
 
-````
+And here's how it looks - nicely colored with styled code titles!
 
-### Python Code Block
-
-```markdown
-```python
-def greet(name):
-    print(f"Hello, {name}!")
-````
-
-````
-
-### No Syntax Highlighting
-
-```markdown
-````
-
-This is a code block without syntax highlighting.
-
+```js:fancyAlert.js
+function fancyAlert(arg) {
+  if (arg) {
+    $.facebox({ div: '#foo' })
+  }
+}
 ```
 
+## Footnotes
+
+```
+Here is a simple footnote[^1]. With some additional text after it.
+
+[^1]: My reference.
 ```
 
----
+Here is a simple footnote[^1]. With some additional text after it.
 
-## Text Formatting
+[^1]: My reference.
 
-```markdown
-**Bold text**
+## Task Lists
 
-_Italic text_
-
-~~Strikethrough~~
-
-**_Combined bold and italic_**
+```
+- [x] list syntax required (any unordered or ordered list supported)
+- [x] this is a complete item
+- [ ] this is an incomplete item
 ```
 
----
-
-## Blockquotes
-
-### Basic Blockquote
-
-```markdown
-> This is a blockquote.  
-> You can add multiple lines by breaking lines with two spaces.
-```
-
-### Nested Blockquotes
-
-```markdown
-> Outer quote
->
-> > Nested quote
-```
-
----
+- [x] list syntax required (any unordered or ordered list supported)
+- [x] this is a complete item
+- [ ] this is an incomplete item
 
 ## Tables
 
-### Basic Table
+You can create tables by assembling a list of words and dividing them with hyphens `-` (for the first row), and then separating each column with a pipe `|`:
 
-```markdown
-| Syntax | Description | Example     |
-| ------ | ----------- | ----------- |
-| Header | Row Content | Row Example |
-| `Code` | Inline      | `Example`   |
+```
+| First Header                | Second Header                |
+| --------------------------- | ---------------------------- |
+| Content from cell 1         | Content from cell 2          |
+| Content in the first column | Content in the second column |
 ```
 
-### Alignment Table
+| First Header                | Second Header                |
+| --------------------------- | ---------------------------- |
+| Content from cell 1         | Content from cell 2          |
+| Content in the first column | Content in the second column |
 
-```markdown
-| Left Align | Center Align | Right Align |
-| ---------- | :----------: | ----------: |
-| Item 1     |    Item 2    |      Item 3 |
-```
+## Strikethrough
 
----
-
-## Horizontal Rules
-
-```markdown
----
-```
-
-```markdown
----
-```
-
----
-
-## Checkboxes (Task Lists)
-
-```markdown
-- [x] Task 1
-- [ ] Task 2
-  - [x] Subtask 2.1
-  - [ ] Subtask 2.2
-```
-
----
-
-## Escaping Characters
-
-```markdown
-\*This text is not italicized\*  
-\# This is not a header
-```
-
----
-
-## Emojis
-
-```markdown
-:smile: :rocket: :tada:
-```
-
----
+Any word wrapped with two tildes (like `~~this~~`) will appear ~~crossed out~~.
