@@ -1,4 +1,6 @@
 import createMDX from '@next/mdx';
+import remarkGfm from 'remark-gfm';
+import rehypePrism from '@mapbox/rehype-prism';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -9,10 +11,12 @@ const nextConfig = {
 };
 
 const withMDX = createMDX({
-  // Add markdown plugins here, if needed
+  extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypePrism],
+    // If you use `MDXProvider`, uncomment the following line.
+    // providerImportSource: "@mdx-js/react",
   },
 });
 

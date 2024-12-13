@@ -1,20 +1,27 @@
-import { getPostBySlug, getPosts } from '@/lib/posts';
+import { getPostBySlug, getAllPosts } from '@/lib/posts';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+
+interface PostProps {
+  params: Promise<{ slugs: string[] }>;
+}
 
 export async function generateStaticParams() {
-  const posts = getPosts();
+  const posts = await getAllPosts();
   return posts.map((post) => ({
-    slug: post.slug,
+    slugs: post.slug.split('/'),
   }));
 }
 
-export default function Post({ params }: { params: { slugs: string } }) {
-  const post = getPostBySlug(params.slugs);
-  const posts = getPosts();
+export default async function Post({ params }: PostProps) {
+  const { slugs } = await params;
+  const slug = slugs.join('/');
+  const post = await getPostBySlug(slug);
+  const posts = await getAllPosts();
 
   if (!post) {
-    return <div>Post not found</div>;
+    notFound();
   }
 
   return (
