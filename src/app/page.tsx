@@ -1,26 +1,6 @@
+import { getPostTree, getAllPosts, Post } from '@/lib/posts';
+import PostNavigation from '@/components/PostNavigation';
 import Link from 'next/link';
-import { getPostTree, PostTree, Post } from '@/lib/posts';
-
-function renderPostTree(tree: PostTree, level: number = 0) {
-  return (
-    <ul className={`space-y-1 ${level > 0 ? 'ml-4' : ''}`}>
-      {tree.children.map((item, index) => (
-        <li key={index}>
-          {'children' in item ? (
-            <>
-              <span className='font-semibold'>{item.name}</span>
-              {renderPostTree(item, level + 1)}
-            </>
-          ) : (
-            <Link href={`/posts/${item.slug}`} className='text-sm hover:underline'>
-              {item.title}
-            </Link>
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-}
 
 function renderPostList(posts: Post[]) {
   return posts.map((post) => (
@@ -38,11 +18,12 @@ function renderPostList(posts: Post[]) {
       <p className='text-muted-foreground'>{post.summary}</p>
       <div className='mt-4'>
         {post.tags.map((tag) => (
-          <span
+          <Link
             key={tag}
-            className='inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200 mr-2 mb-2'>
+            href={`/tags/${tag}`}
+            className='inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200 mr-2 mb-2 hover:bg-gray-300 dark:hover:bg-gray-600'>
             #{tag}
-          </span>
+          </Link>
         ))}
       </div>
     </article>
@@ -51,19 +32,16 @@ function renderPostList(posts: Post[]) {
 
 export default async function Home() {
   const postTree = await getPostTree();
+  const allPosts = await getAllPosts();
 
   return (
-    <div className='container grid grid-cols-[200px_1fr] gap-12 px-8 py-8'>
+    <div className='grid grid-cols-[200px_1fr] gap-12'>
       <aside className='w-[200px]'>
-        <nav className='flex flex-col space-y-1'>{renderPostTree(postTree)}</nav>
+        <PostNavigation tree={postTree} />
       </aside>
       <main>
         <h1 className='text-3xl font-bold mb-6'>Latest Posts</h1>
-        <div className='grid gap-4'>
-          {renderPostList(
-            postTree.children.filter((item): item is Post => !('children' in item))
-          )}
-        </div>
+        <div className='grid gap-4'>{renderPostList(allPosts)}</div>
       </main>
     </div>
   );
