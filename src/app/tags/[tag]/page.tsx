@@ -13,7 +13,10 @@ export default async function TagPage({ params }: { params: { tag: string } }) {
 
   return (
     <div>
-      <h1 className='text-3xl font-bold mb-6'>Posts tagged with #{params.tag}</h1>
+      <h1 className='text-3xl font-bold mb-6'>
+        Posts tagged with #{params.tag}{' '}
+        <span className='text-gray-500 dark:text-gray-400'>({tagPosts.length})</span>
+      </h1>
       <div className='grid gap-4'>
         {tagPosts.map((post: Post) => (
           <article

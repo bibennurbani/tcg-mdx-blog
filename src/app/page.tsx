@@ -3,6 +3,13 @@ import PostNavigation from '@/components/PostNavigation';
 import Link from 'next/link';
 
 function renderPostList(posts: Post[]) {
+  const tagCounts = posts.reduce((acc, post) => {
+    post.tags.forEach((tag) => {
+      acc[tag] = (acc[tag] || 0) + 1;
+    });
+    return acc;
+  }, {} as Record<string, number>);
+
   return posts.map((post) => (
     <article
       key={post.slug}
@@ -22,7 +29,8 @@ function renderPostList(posts: Post[]) {
             key={tag}
             href={`/tags/${tag}`}
             className='inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200 mr-2 mb-2 hover:bg-gray-300 dark:hover:bg-gray-600'>
-            #{tag}
+            #{tag}{' '}
+            <span className='text-gray-500 dark:text-gray-400'>({tagCounts[tag]})</span>
           </Link>
         ))}
       </div>
