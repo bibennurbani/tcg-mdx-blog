@@ -7,14 +7,19 @@ export async function generateStaticParams() {
   return tags.map((tag) => ({ tag }));
 }
 
-export default async function TagPage({ params }: { params: { tag: string } }) {
+interface TagPageProps {
+  params: Promise<{ tag: string }>;
+}
+
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag } = await params;
   const posts = await getAllPosts();
-  const tagPosts = posts.filter((post) => post.tags.includes(params.tag));
+  const tagPosts = posts.filter((post) => post.tags.includes(tag));
 
   return (
     <div>
       <h1 className='text-3xl font-bold mb-6'>
-        Posts tagged with #{params.tag}{' '}
+        Posts tagged with #{tag}{' '}
         <span className='text-gray-500 dark:text-gray-400'>({tagPosts.length})</span>
       </h1>
       <div className='grid gap-4'>
