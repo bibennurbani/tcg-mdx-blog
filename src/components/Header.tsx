@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ThemeToggle } from './theme-toggle';
 
 const Header = () => {
   return (
@@ -22,6 +23,9 @@ const Header = () => {
               About
             </Link>
           </nav>
+        </div>
+        <div className='flex items-center space-x-4'>
+          <ThemeToggle />
         </div>
       </div>
     </header>
