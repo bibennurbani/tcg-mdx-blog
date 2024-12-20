@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ChevronRight } from 'lucide-react';
-import { PostTree, Post } from '@/lib/posts';
+import { PostTreeRoot, PostTree, Post } from '@/lib/posts';
 
 interface PostNavigationProps {
-  tree: PostTree;
+  tree: PostTreeRoot;
 }
 
 const PostNavigation: React.FC<PostNavigationProps> = ({ tree }) => {
@@ -24,38 +24,58 @@ const PostNavigation: React.FC<PostNavigationProps> = ({ tree }) => {
     });
   };
 
-  const renderTree = (node: PostTree | Post, level: number = 0) => {
-    if ('children' in node) {
-      const isExpanded = expandedFolders.has(node.path);
-      return (
-        <li key={node.path}>
-          <button
-            onClick={() => toggleFolder(node.path)}
-            className='flex items-center space-x-1 text-sm font-medium hover:text-primary'>
-            {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-            <span>{node.name}</span>
-          </button>
-          {isExpanded && (
-            <ul className='ml-4 mt-1 space-y-1'>
-              {node.children.map((child) => renderTree(child, level + 1))}
-            </ul>
-          )}
-        </li>
-      );
-    } else {
-      return (
-        <li key={node.slug}>
-          <Link
-            href={`/posts/${node.slug}`}
-            className='text-sm hover:text-primary hover:underline'>
-            {node.title}
-          </Link>
-        </li>
-      );
-    }
+  const renderPost = (post: Post, isLast: boolean) => (
+    <li key={post.slug}>
+      <Link
+        href={`/posts/${post.slug}`}
+        className='text-sm hover:text-primary hover:underline block py-1'>
+        {post.title}
+      </Link>
+      {!isLast && <div className='border-t border-gray-200 dark:border-gray-700 my-1' />}
+    </li>
+  );
+
+  const renderFolder = (folder: PostTree, level: number = 0, isLast: boolean) => {
+    const isExpanded = expandedFolders.has(folder.path);
+    return (
+      <li key={folder.path}>
+        <button
+          onClick={() => toggleFolder(folder.path)}
+          className='flex items-center space-x-1 text-sm font-medium hover:text-primary py-1'>
+          {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
+          <span>{folder.name}</span>
+        </button>
+        {isExpanded && (
+          <ul className='ml-4 space-y-1'>
+            {folder.children.map((child, index) =>
+              'children' in child
+                ? renderFolder(child, level + 1, index === folder.children.length - 1)
+                : renderPost(child, index === folder.children.length - 1)
+            )}
+          </ul>
+        )}
+        {!isLast && (
+          <div className='border-t border-gray-200 dark:border-gray-700 my-1' />
+        )}
+      </li>
+    );
   };
 
-  return <nav className='space-y-1'>{renderTree(tree)}</nav>;
+  return (
+    <nav className='space-y-1'>
+      <ul>
+        {tree.topLevelMdx.map((post, index) =>
+          renderPost(
+            post,
+            index === tree.topLevelMdx.length - 1 && tree.folders.length === 0
+          )
+        )}
+        {tree.folders.map((folder, index) =>
+          renderFolder(folder, 0, index === tree.folders.length - 1)
+        )}
+      </ul>
+    </nav>
+  );
 };
 
 export default PostNavigation;
