@@ -18,66 +18,75 @@ export interface PostTree {
   children: (PostTree | Post)[];
 }
 
-async function readDirectory(dir: string): Promise<PostTree> {
+export interface PostTreeRoot {
+  topLevelMdx: Post[];
+  folders: PostTree[];
+}
+
+async function readDirectory(dir: string, basePath: string): Promise<PostTreeRoot> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
-  const children: (PostTree | Post)[] = [];
+  const topLevelMdx: Post[] = [];
+  const folders: PostTree[] = [];
 
   for (const entry of entries) {
     const res = path.resolve(dir, entry.name);
+    const relativePath = path.relative(basePath, res);
+
     if (entry.isDirectory()) {
-      children.push(await readDirectory(res));
+      const subTree = await readDirectory(res, basePath);
+      folders.push({
+        name: entry.name,
+        path: relativePath,
+        children: [...subTree.topLevelMdx, ...subTree.folders],
+      });
     } else if (entry.isFile() && entry.name.endsWith('.mdx')) {
       const fileContents = await fs.readFile(res, 'utf8');
       const { data, content } = matter(fileContents);
       if (!data.draft) {
-        children.push({
-          slug: path
-            .relative(path.join(process.cwd(), 'public', 'posts'), res)
-            .replace('.mdx', ''),
+        const post: Post = {
+          slug: relativePath.replace('.mdx', ''),
           title: data.title,
           date: data.date,
           tags: data.tags,
           draft: false,
           summary: data.summary,
           content: content,
-        });
+        };
+        topLevelMdx.push(post);
       }
     }
   }
 
   return {
-    name: path.basename(dir),
-    path: path.relative(path.join(process.cwd(), 'public', 'posts'), dir),
-    children: children.sort((a, b) => {
-      if ('date' in a && 'date' in b) {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      }
-      return 0;
-    }),
+    topLevelMdx: topLevelMdx.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    ),
+    folders: folders.sort((a, b) => a.name.localeCompare(b.name)),
   };
 }
 
-export async function getPostTree(): Promise<PostTree> {
+export async function getPostTree(): Promise<PostTreeRoot> {
   const postsDirectory = path.join(process.cwd(), 'public', 'posts');
-  return await readDirectory(postsDirectory);
+  return await readDirectory(postsDirectory, postsDirectory);
 }
 
 export async function getAllPosts(): Promise<Post[]> {
   const tree = await getPostTree();
   const posts: Post[] = [];
 
-  function flattenTree(node: PostTree | Post) {
-    if ('children' in node) {
-      for (const child of node.children) {
-        flattenTree(child);
+  function flattenTree(nodes: (PostTree | Post)[]) {
+    for (const node of nodes) {
+      if ('children' in node) {
+        flattenTree(node.children);
+      } else {
+        posts.push(node);
       }
-    } else {
-      posts.push(node);
     }
   }
 
-  flattenTree(tree);
-  return posts;
+  posts.push(...tree.topLevelMdx);
+  flattenTree(tree.folders);
+  return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | undefined> {
