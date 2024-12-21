@@ -1,11 +1,12 @@
 import { getAllPosts, Post } from '@/lib/posts';
 import TagNavigation from '@/components/TagNavigation';
 import Link from 'next/link';
+import { encodeSlug, decodeSlug } from '@/lib/posts';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
   const tags = Array.from(new Set(posts.flatMap((post) => post.tags)));
-  return tags.map((tag) => ({ tag }));
+  return tags.map((tag) => ({ tag: encodeSlug(tag) }));
 }
 
 interface TagPageProps {
@@ -13,13 +14,14 @@ interface TagPageProps {
 }
 
 export default async function TagPage({ params }: TagPageProps) {
-  const { tag } = params;
+  const decodedTag = decodeSlug(params.tag);
   const posts = await getAllPosts();
-  const tagPosts = posts.filter((post) => post.tags.includes(tag));
+  const tagPosts = posts.filter((post) => post.tags.includes(params.tag));
 
   const tagCounts = posts.reduce((acc, post) => {
     post.tags.forEach((t) => {
-      acc[t] = (acc[t] || 0) + 1;
+      const decodedT = decodeSlug(t);
+      acc[decodedT] = (acc[decodedT] || 0) + 1;
     });
     return acc;
   }, {} as Record<string, number>);
@@ -29,11 +31,11 @@ export default async function TagPage({ params }: TagPageProps) {
   return (
     <div className='grid grid-cols-[200px_1fr] gap-12'>
       <aside className='w-[200px]'>
-        <TagNavigation tags={sortedTags} selectedTag={tag} />
+        <TagNavigation tags={sortedTags} selectedTag={decodedTag} />
       </aside>
       <main>
         <h1 className='text-3xl font-bold mb-6'>
-          Posts tagged with #{tag}{' '}
+          Posts tagged with #{decodedTag}{' '}
           <span className='text-gray-500 dark:text-gray-400'>({tagPosts.length})</span>
         </h1>
         <div className='grid gap-4'>
