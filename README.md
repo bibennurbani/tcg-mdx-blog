@@ -1,40 +1,108 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Next.js 15 MDX Blog
+
+This project is a personal blog built with Next.js 15, utilizing the new App Router, MDX for content management, and featuring a modern, responsive design with dark mode support.
+
+## Features
+
+- Built with Next.js 15 and the new App Router
+- MDX support for writing blog posts
+- Dynamic post list and navigation
+- Nested folder support for organizing blog posts
+- Tag system with counters
+- Dark mode, light mode, and system-detected mode
+- Responsive design
+- Docker support for easy deployment
+- Changelog for tracking project updates
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Node.js 18 or later
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+
+````
+
+git clone [https://github.com/bibennurbani/tcg-mdx-blog.git](https://github.com/bibennurbani/tcg-mdx-blog.git)
+cd nextjs-mdx-blog
+
+```plaintext
+
+2. Install dependencies:
+````
+
+npm install
+
+```plaintext
+or if you're using yarn:
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+yarn
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```plaintext
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+3. Run the development server:
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+npm run dev
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```plaintext
+or
+```
 
-## Learn More
+yarn dev
 
-To learn more about Next.js, take a look at the following resources:
+````plaintext
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+- `src/app`: Contains the main application code
+- `src/components`: Reusable React components
+- `src/lib`: Utility functions and helpers
+- `public/posts`: MDX files for blog posts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Writing Blog Posts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+Create new `.mdx` files in the `public/posts` directory. You can organize posts in subdirectories for better structure. Each post should have frontmatter with the following fields:
+
+```yaml
+---
+title: Your Post Title
+date: '2023-07-20'
+tags: [tag1, tag2]
+summary: A brief summary of your post
+draft: false
+---
+````
+
+## Deployment
+
+This project can be deployed using Docker. A `Dockerfile` and `docker-compose.yml` are provided for easy setup.
+
+1. Build the Docker image:
+
+```plaintext
+docker build -t nextjs-mdx-blog .
+```
+
+2. Run the container:
+
+```plaintext
+docker-compose up -d
+```
+
+The blog will be available at `http://localhost:3000`.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is open source and available under the [MIT License](LICENSE).
