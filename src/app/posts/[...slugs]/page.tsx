@@ -29,7 +29,7 @@ export default async function Post({ params }: PostProps) {
       <aside className='w-[200px]'>
         <div className='mb-6'>
           <h3 className='font-semibold mb-2'>Author</h3>
-          <p>John Doe</p>
+          <Link href={'/about'}>Biben Nurbani Hasan</Link>
         </div>
         <div className='mb-6'>
           <h3 className='font-semibold mb-2'>Tags</h3>

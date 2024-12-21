@@ -1,0 +1,164 @@
+---
+title: 'Understanding Core C# Concepts: A Practical Guide'
+date: '2024-12-20'
+tags: [csharp, Programming, .NET, Software-Development]
+draft: false
+summary: 'Learn essential C# concepts including Reflection, Access Modifiers, Dependency Injection, and more, explained with examples for both beginners and professionals.'
+---
+
+## Introduction
+
+C# is a versatile and powerful programming language widely used for developing web, desktop, and mobile applications. This guide covers fundamental C# concepts, with practical examples to help you understand and implement them effectively in your projects.
+
+---
+
+## Constructor in C#
+
+A **constructor** is a special method used to initialize an object. It is invoked automatically when an object is created. Constructors can either be parameterless (default) or accept parameters.
+
+### Example:
+
+```csharp
+public class Person {
+    public string Name { get; set; }
+
+    // Default constructor
+    public Person() {
+        Name = "Unknown";
+    }
+
+    // Parameterized constructor
+    public Person(string name) {
+        Name = name;
+    }
+}
+
+var person1 = new Person(); // Uses default constructor
+var person2 = new Person("John"); // Uses parameterized constructor
+```
+
+---
+
+## Access Modifiers in C#
+
+Access modifiers control the visibility of classes, methods, and fields. Common modifiers include:
+
+1. **Public**: Accessible from anywhere.
+2. **Private**: Accessible only within the containing class.
+3. **Protected**: Accessible within the containing class and its derived classes.
+4. **Internal**: Accessible within the same assembly.
+5. **Protected Internal**: Combines the features of Protected and Internal.
+
+### Difference Between Protected and Internal
+
+- **Protected**: Can be accessed in derived classes.
+- **Internal**: Can be accessed in any class within the same assembly.
+
+---
+
+## Using Keyword
+
+The `using` keyword serves several purposes, including:
+
+1. **Namespace Inclusion**: To include namespaces.
+2. **Resource Management**: Automatically disposes objects that implement `IDisposable` when they go out of scope.
+
+### Example:
+
+```csharp
+using System;
+
+// Resource management example
+using (var resource = new FileStream("example.txt", FileMode.Open)) {
+    // Perform file operations
+}
+```
+
+---
+
+## Dependency Injection (DI)
+
+Dependency Injection is a design pattern to achieve Inversion of Control (IoC). It decouples objects by injecting their dependencies externally.
+
+### Example:
+
+```csharp
+public interface ILogger {
+    void Log(string message);
+}
+
+public class ConsoleLogger : ILogger {
+    public void Log(string message) {
+        Console.WriteLine(message);
+    }
+}
+
+public class Application {
+    private readonly ILogger _logger;
+
+    public Application(ILogger logger) {
+        _logger = logger;
+    }
+
+    public void Run() {
+        _logger.Log("Application is running");
+    }
+}
+
+// Injecting dependency
+var logger = new ConsoleLogger();
+var app = new Application(logger);
+app.Run();
+```
+
+---
+
+## Reflection in C#
+
+Reflection allows you to inspect and interact with metadata and structure of types at runtime. It resides in the `System.Reflection` namespace.
+
+### Example: Inspecting Metadata
+
+```csharp
+using System;
+using System.Reflection;
+
+public class SampleClass {
+    public int Id { get; set; }
+    public string Name { get; set; }
+
+    public void Display() {
+        Console.WriteLine($"Id: {Id}, Name: {Name}");
+    }
+}
+
+class Program {
+    static void Main() {
+        Type type = typeof(SampleClass);
+
+        // Display type name
+        Console.WriteLine("Type: " + type.Name);
+
+        // Get and display properties
+        foreach (var property in type.GetProperties()) {
+            Console.WriteLine("Property: " + property.Name);
+        }
+    }
+}
+```
+
+### Example: Invoking Methods Dynamically
+
+```csharp
+object instance = Activator.CreateInstance(typeof(SampleClass));
+MethodInfo method = typeof(SampleClass).GetMethod("Display");
+method.Invoke(instance, null);
+```
+
+---
+
+## Conclusion
+
+Understanding these core concepts is vital for mastering C#. Whether you are exploring Reflection, implementing Dependency Injection, or using constructors effectively, these examples provide a solid foundation for practical application in real-world projects.
+
+Continue exploring and practicing to elevate your C# development skills!
