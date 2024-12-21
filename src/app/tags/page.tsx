@@ -1,14 +1,12 @@
 import { getAllPosts } from '@/lib/posts';
 import TagNavigation from '@/components/TagNavigation';
 import Link from 'next/link';
-import { encodeSlug, decodeSlug } from '@/lib/posts';
 
 export default async function TagsPage() {
   const posts = await getAllPosts();
   const tagCounts = posts.reduce((acc, post) => {
     post.tags.forEach((tag) => {
-      const decodedTag = decodeSlug(tag);
-      acc[decodedTag] = (acc[decodedTag] || 0) + 1;
+      acc[tag] = (acc[tag] || 0) + 1;
     });
     return acc;
   }, {} as Record<string, number>);
@@ -26,7 +24,7 @@ export default async function TagsPage() {
           {sortedTags.map(([tag, count]) => (
             <Link
               key={tag}
-              href={`/tags/${encodeSlug(tag)}`}
+              href={`/tags/${tag}`}
               className='inline-block bg-gray-200 dark:bg-gray-700 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'>
               #{tag} <span className='text-gray-500 dark:text-gray-400'>({count})</span>
             </Link>

@@ -23,14 +23,6 @@ export interface PostTreeRoot {
   folders: PostTree[];
 }
 
-function encodeSlug(slug: string): string {
-  return encodeURIComponent(slug.replace(/\s+/g, '-').toLowerCase());
-}
-
-function decodeSlug(encodedSlug: string): string {
-  return decodeURIComponent(encodedSlug).replace(/-/g, ' ');
-}
-
 async function readDirectory(dir: string, basePath: string): Promise<PostTreeRoot> {
   const entries = await fs.readdir(dir, { withFileTypes: true });
   const topLevelMdx: Post[] = [];
@@ -44,7 +36,7 @@ async function readDirectory(dir: string, basePath: string): Promise<PostTreeRoo
       const subTree = await readDirectory(res, basePath);
       folders.push({
         name: entry.name,
-        path: encodeSlug(relativePath),
+        path: relativePath,
         children: [...subTree.topLevelMdx, ...subTree.folders],
       });
     } else if (entry.isFile() && entry.name.endsWith('.mdx')) {
@@ -52,10 +44,10 @@ async function readDirectory(dir: string, basePath: string): Promise<PostTreeRoo
       const { data, content } = matter(fileContents);
       if (!data.draft) {
         const post: Post = {
-          slug: encodeSlug(relativePath.replace('.mdx', '')),
+          slug: relativePath.replace('.mdx', ''),
           title: data.title,
           date: data.date,
-          tags: data.tags.map(encodeSlug),
+          tags: data.tags,
           draft: false,
           summary: data.summary,
           content: content,
@@ -97,9 +89,7 @@ export async function getAllPosts(): Promise<Post[]> {
   return posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
-export async function getPostBySlug(encodedSlug: string): Promise<Post | undefined> {
+export async function getPostBySlug(slug: string): Promise<Post | undefined> {
   const posts = await getAllPosts();
-  return posts.find((post) => post.slug === encodedSlug);
+  return posts.find((post) => post.slug === slug);
 }
-
-export { encodeSlug, decodeSlug };

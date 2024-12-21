@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import { PostTreeRoot, PostTree, Post } from '@/lib/posts';
-import { decodeSlug } from '@/lib/posts';
 
 interface PostNavigationProps {
   tree: PostTreeRoot;
@@ -44,7 +43,7 @@ const PostNavigation: React.FC<PostNavigationProps> = ({ tree }) => {
           onClick={() => toggleFolder(folder.path)}
           className='flex items-center space-x-1 text-sm font-medium hover:text-primary py-1'>
           {isExpanded ? <ChevronDown size={16} /> : <ChevronRight size={16} />}
-          <span>{decodeSlug(folder.name)}</span>
+          <span>{folder.name}</span>
         </button>
         {isExpanded && (
           <ul className='ml-4 space-y-1'>
