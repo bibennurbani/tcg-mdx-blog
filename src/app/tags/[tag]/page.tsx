@@ -1,6 +1,7 @@
 import { getAllPosts, Post } from '@/lib/posts';
 import TagNavigation from '@/components/TagNavigation';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -9,11 +10,19 @@ export async function generateStaticParams() {
 }
 
 interface TagPageProps {
-  params: { tag: string };
+  params: Promise<{ tag: string }>;
+}
+
+export async function generateMetadata({ params }: TagPageProps): Promise<Metadata> {
+  const { tag } = await params;
+  return {
+    title: `Posts tagged with #${tag}`,
+    description: `Explore all blog posts tagged with #${tag} on My Blog.`,
+  };
 }
 
 export default async function TagPage({ params }: TagPageProps) {
-  const { tag } = params;
+  const { tag } = await params;
   const posts = await getAllPosts();
   const tagPosts = posts.filter((post) => post.tags.includes(tag));
 

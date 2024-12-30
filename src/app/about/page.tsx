@@ -19,14 +19,14 @@ export default function AboutPage() {
       </div>
       <div className='prose dark:prose-invert'>
         <p>
-          Hello! I'm Biben Nurbani Hasan, a passionate web software engineer and blogger.
-          I love creating intuitive and efficient web applications and sharing my
+          Hello! I&apos;m Biben Nurbani Hasan, a passionate web software engineer and
+          blogger. I love creating intuitive and efficient web applications and sharing my
           knowledge through writing.
         </p>
         <p>
-          On this blog, you'll find articles about web development, programming best
+          On this blog, you&apos;ll find articles about web development, programming best
           practices, and my thoughts on the latest tech trends. Feel free to explore and
-          don't hesitate to reach out if you have any questions or just want to chat!
+          don&apos;t hesitate to reach out if you have any questions or just want to chat!
         </p>
       </div>
     </div>
