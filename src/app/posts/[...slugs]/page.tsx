@@ -99,3 +99,5 @@ export default async function Post({ params }: PostProps) {
     </div>
   );
 }
+
+export const revalidate = 86400;

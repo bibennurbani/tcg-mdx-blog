@@ -66,3 +66,5 @@ export default async function TagPage({ params }: TagPageProps) {
     </div>
   );
 }
+
+export const revalidate = 86400;
