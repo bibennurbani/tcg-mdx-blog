@@ -1,6 +1,13 @@
 import { getPostTree, getAllPosts, Post } from '@/lib/posts';
 import PostNavigation from '@/components/PostNavigation';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Home',
+  description:
+    'Welcome to My Blog - Explore the latest posts on web development and technology.',
+};
 
 function renderPostList(posts: Post[]) {
   const tagCounts = posts.reduce((acc, post) => {
@@ -54,3 +61,5 @@ export default async function Home() {
     </div>
   );
 }
+
+export const revalidate = 86400;

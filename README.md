@@ -25,15 +25,17 @@ This project is a personal blog built with Next.js 15, utilizing the new App Rou
 
 1. Clone the repository:
 
-````
+```
 
 git clone [https://github.com/bibennurbani/tcg-mdx-blog.git](https://github.com/bibennurbani/tcg-mdx-blog.git)
 cd nextjs-mdx-blog
 
+```
+
 ```plaintext
 
 2. Install dependencies:
-````
+```
 
 npm install
 
