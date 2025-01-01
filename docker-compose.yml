@@ -15,9 +15,10 @@ services:
       - proxy
     labels:
       - 'traefik.enable=true'
-      - 'traefik.http.routers.nextjs.entrypoints=https'
-      - 'traefik.http.routers.nextjs.rule=Host(`tcglabs.id`)'
-      - 'traefik.http.services.nextjs.loadbalancer.server.port=3000'
+      - 'traefik.http.routers.blog.entrypoints=https'
+      - 'traefik.http.routers.blog.rule=Host(`tcglabs.id`)'
+      - 'traefik.http.routers.blog.tls=true'
+      - 'traefik.http.services.blog.loadbalancer.server.port=3000'
 
 networks:
   proxy:
