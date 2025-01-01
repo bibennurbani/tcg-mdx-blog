@@ -1,6 +1,6 @@
 {
   "name": "tcg-mdx-blog",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "description": "Next JS Application that read mdx files from public/posts files and show it on web navigation",
   "scripts": {
