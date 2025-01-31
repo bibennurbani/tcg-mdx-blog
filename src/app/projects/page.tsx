@@ -1,17 +1,25 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const projects = [
   {
-    title: 'Project 1',
-    description: 'This is a description of Project 1.',
-    image: '/placeholder.svg?height=360&width=640',
-    link: '#',
+    title: 'TK Nuryanti',
+    description: 'A website for TK Nuryanti Registration and Marketing',
+    image: '/projects/tknuryanti.png?height=360&width=640',
+    link: 'https://nuryantiislamicmontessori.com/',
   },
   {
-    title: 'Project 2',
-    description: 'This is a description of Project 2.',
-    image: '/placeholder.svg?height=360&width=640',
-    link: '#',
+    title: 'Eyewear Tryon',
+    description: 'A Marketplace website with AR to try on the eyeglasses right away',
+    image: '/projects/eyewear-tryon.png?height=360&width=640',
+    link: 'https://tryon.tcglabs.id',
+  },
+  {
+    title: 'TCG Labs Blog',
+    description:
+      'A Blog website that will update the content and public content whenever mdx is added to public files',
+    image: '/projects/tcgblogs.png?height=360&width=640',
+    link: 'https://tcglabs.id',
   },
   // Add more projects as needed
 ];
@@ -35,11 +43,11 @@ export default function ProjectsPage() {
               <p className='text-gray-600 dark:text-gray-300 mb-4'>
                 {project.description}
               </p>
-              <a
+              <Link
                 href={project.link}
                 className='inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors'>
                 View Project
-              </a>
+              </Link>
             </div>
           </div>
         ))}
